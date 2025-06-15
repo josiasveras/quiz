@@ -1,19 +1,21 @@
 package com.app.quiz.controller
 
-import com.app.quiz.model.Question
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import com.app.quiz.dto.QuestionResponse
+import com.app.quiz.service.QuestionService
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/quiz")
 class QuestionController {
 
+    private final QuestionService questionService
+
+   QuestionController(QuestionService questionService) {
+       this.questionService = questionService
+   }
+
     @GetMapping("/question")
-    Question getQuestion() {
-        return new Question(
-                statement: "Qual o primeiro livro da Bíblia?",
-                options: ["Apocalipse", "Marcos", "Gênesis"]
-        )
+    QuestionResponse getQuestion() {
+        return questionService.getRandomQuestion()
     }
 }
