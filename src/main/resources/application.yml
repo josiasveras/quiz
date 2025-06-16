@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: quiz-api
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  main:
+    banner-mode: "console"  # Valid options: off, console, or log
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
