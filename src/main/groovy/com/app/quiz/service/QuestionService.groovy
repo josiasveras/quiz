@@ -4,7 +4,9 @@ import com.app.quiz.dto.AnswerRequest
 import com.app.quiz.dto.AnswerResponse
 import com.app.quiz.dto.QuestionResponse
 import com.app.quiz.model.Question
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 
 @Service
 class QuestionService {
@@ -42,13 +44,17 @@ class QuestionService {
             )
     ]
 
-    QuestionResponse getRandomQuestion() {
-        def randomQuestion = mockQuestions[new Random().nextInt(mockQuestions.size())]
+    QuestionResponse getQuestionById(Long id) {
+        def question = mockQuestions.find{ it.id == id}
+
+        if (!question) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Question with ID ${id} not found.")
+        }
 
         return new QuestionResponse(
-                id: randomQuestion.id,
-                text: randomQuestion.text,
-                options: randomQuestion.options
+                id: question.id,
+                text: question.text,
+                options: question.options
         )
     }
 

@@ -16,9 +16,9 @@ class QuestionController {
        this.questionService = questionService
    }
 
-    @GetMapping("/question")
-    QuestionResponse getQuestion() {
-        return questionService.getRandomQuestion()
+    @GetMapping("/question/{id}")
+    QuestionResponse getQuestionById(@PathVariable("id") Long id) {
+        return questionService.getQuestionById(id)
     }
 
     @PostMapping("/answer")
