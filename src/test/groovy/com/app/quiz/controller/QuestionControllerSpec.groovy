@@ -2,14 +2,12 @@ package com.app.quiz.controller
 
 import com.app.quiz.dto.QuestionResponse
 import com.app.quiz.service.QuestionService
-import org.junit.jupiter.api.BeforeEach
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import spock.lang.Specification
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -22,12 +20,6 @@ class QuestionControllerSpec extends Specification {
     @Autowired
     MockMvc mockMvc;
 
-    @BeforeEach
-    void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new QuestionController(questionService))
-                .build()
-    }
-
     @MockBean
     QuestionService questionService
 
@@ -39,12 +31,15 @@ class QuestionControllerSpec extends Specification {
                 options: ["A) Tambor", "B) Harpa", "C) Flauta"]
         )
 
-        when: "the service returns the mock response"
+        and: "the service returns the mock response"
         Mockito.when(questionService.getQuestionById(ArgumentMatchers.any())).thenReturn(mockQuestions);
 
+        when: "the GET request is sent"
+        def response = this.mockMvc.perform(get("/quiz/question/{id}", 1L))
+
         then: "the endpoint responds with status 200 and valid JSON"
-        this.mockMvc.perform(get("/quiz/question/{id}", 1L))
-                .andExpect(status().isOk())
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath('$.id').value(1))
                 .andExpect(jsonPath('$.text').value("Qual instrumento Davi gostava de tocar?"))
                 .andExpect(jsonPath('$.options').isArray())
                 .andExpect(jsonPath('$.options.length()').value(3))
