@@ -1,7 +1,5 @@
 package com.app.quiz.service
 
-import com.app.quiz.dto.AnswerRequest
-import com.app.quiz.dto.AnswerResponse
 import com.app.quiz.dto.QuestionResponse
 import com.app.quiz.model.Question
 import org.springframework.http.HttpStatus
@@ -45,7 +43,7 @@ class QuestionService {
     ]
 
     QuestionResponse getQuestionById(Long id) {
-        def question = mockQuestions.find{ it.id == id}
+        def question = mockQuestions.find { it.id == id }
 
         if (!question) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Question with ID ${id} not found.")
@@ -58,21 +56,4 @@ class QuestionService {
         )
     }
 
-    AnswerResponse validateAnswer(AnswerRequest answerRequest) {
-        def question = mockQuestions.find { it.id == answerRequest.questionId }
-
-        if (!question) {
-            return new AnswerResponse(
-                    correct: false,
-                    message: "Pergunta não encontrada."
-            )
-        }
-
-        boolean isCorrect = question.correctAnswer.equalsIgnoreCase(answerRequest.selectedAnswer?.trim())
-
-        return new AnswerResponse(
-                correct: isCorrect,
-                message: isCorrect ? "Resposta correta!" : "Resposta incorreta."
-        )
-    }
 }
