@@ -46,6 +46,7 @@ O projeto está em fase de desenvolvimento inicial e **atualmente utiliza dados 
 │   │   │   └── 📁 com/app/quiz
 │   │   │       ├── 📁 controller
 │   │   │       │   └── QuestionController.groovy          # Endpoints REST
+│   │   │       │   └── AnswerController.groovy            # Endpoints REST
 │   │   │       ├── 📁 dto
 │   │   │       │   ├── AnswerRequest.groovy               # Request model (POST /answer)
 │   │   │       │   ├── AnswerResponse.groovy              # Response model (POST /answer)
@@ -53,8 +54,9 @@ O projeto está em fase de desenvolvimento inicial e **atualmente utiliza dados 
 │   │   │       ├── 📁 model
 │   │   │       │   └── Question.groovy                    # Entidade base (mock)
 │   │   │       ├── 📁 service
-│   │   │       │   └── QuestionService.groovy             # Lógica de negócio e validação de respostas
-│   │   │       └── 📄 QuizApiApplication.groovy            # Classe principal
+│   │   │       │   └── QuestionService.groovy             # Lógica de negócio
+│   │   │       │   └── AnswerService.groovy               # Lógica de negócio
+│   │   │       └── 📄 QuizApiApplication.groovy           # Classe principal
 │   │   └── 📁 resources
 │   │       └── application.yml                            # Configurações da aplicação
 │   └── 📁 test
