@@ -4,7 +4,6 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "questions")
-
 class Question {
 
     @Id
@@ -16,7 +15,7 @@ class Question {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "question_options", joinColumns = @JoinColumn(name = "question_id"))
-    @Column(name = "option")
+    @Column(name = "option_value")
     List<String> options = []
 
     @Column(name = "correct_answer", nullable = false)

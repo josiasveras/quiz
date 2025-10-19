@@ -3,11 +3,21 @@ spring:
     active: local
   application:
     name: quiz-api
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   main:
     banner-mode: "console"  # Valid options: off, console, or log
+  datasource:
+    url: jdbc:mysql://localhost:3306/quizdb?useSSL=false&serverTimezone=UTC
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
 
 server:
   port: 8080
