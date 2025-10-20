@@ -7,29 +7,29 @@ O projeto está em fase de desenvolvimento inicial e **atualmente utiliza dados 
 
 ## 💻 Tecnologias Principais
 
-| Categoria                   | Tecnologias                             |
-| --------------------------- | --------------------------------------- |
-| **Linguagem**               | Groovy 4.0.14                           |
-| **Framework**               | Spring Boot 3.x                         |
-| **Banco de Dados (futuro)** | MySQL *(integração em desenvolvimento)* |
-| **Build Tool**              | Gradle                                  |
-| **Testes**                  | Spock Framework                         |
-| **Documentação**            | OpenAPI / Swagger                       |
-| **Client API**              | Postman                                 |
-| **IDE**                     | IntelliJ IDEA                           |
+| Categoria          | Tecnologias       |
+|--------------------|-------------------|
+| **Linguagem**      | Groovy 4.0.14     |
+| **Framework**      | Spring Boot 3.x   |
+| **Banco de Dados** | MySQL             |
+| **Build Tool**     | Gradle            |
+| **Testes**         | Spock Framework   |
+| **Documentação**   | OpenAPI / Swagger |
+| **Client API**     | Postman           |
+| **IDE**            | IntelliJ IDEA     |
 
 ---
 
 ## ⚙️ Funcionalidades Atuais
 
-* 📋 **Listagem de perguntas (mockadas)**
-  As perguntas e respostas são carregadas a partir de dados simulados.
+* 📋 **Listagem de perguntas**
+  As perguntas e respostas são carregadas a partir de Banco de Dados.
 
-* ✅ **Validação de respostas (mock)**
-  O sistema compara a resposta enviada com o valor correto definido no mock.
+* ✅ **Validação de respostas**
+  O sistema compara a resposta enviada com o valor correto definido no Banco de Dados.
 
 * 🧩 **Arquitetura organizada**
-  Estruturada em camadas de *Controller*, *Service*, *DTO* e *Model*.
+  Estruturada em camadas de *Controller*, *DTO*, *Model*, *Repository*,  e *Service*.
 
 * 🧪 **Testes automatizados**
   Cobertura das rotas principais e regras de negócio utilizando o *Spock Framework*.
@@ -45,29 +45,37 @@ O projeto está em fase de desenvolvimento inicial e **atualmente utiliza dados 
 │   │   ├── 📁 groovy
 │   │   │   └── 📁 com/app/quiz
 │   │   │       ├── 📁 controller
-│   │   │       │   └── QuestionController.groovy          # Endpoints REST
 │   │   │       │   └── AnswerController.groovy            # Endpoints REST
+│   │   │       │   └── QuestionController.groovy          # Endpoints REST
 │   │   │       ├── 📁 dto
 │   │   │       │   ├── AnswerRequest.groovy               # Request model (POST /answer)
 │   │   │       │   ├── AnswerResponse.groovy              # Response model (POST /answer)
 │   │   │       │   └── QuestionResponse.groovy            # Response model (GET /question/{id})
 │   │   │       ├── 📁 model
-│   │   │       │   └── Question.groovy                    # Entidade base (mock)
+│   │   │       │   └── Answer.groovy                      # Entidade para Pergunta
+│   │   │       │   └── Question.groovy                    # Entidade para Questão
+│   │   │       ├── 📁 repository
+│   │   │       │   └── AnswerRepository.groovy            # Interface para Persistência em Banco de Dados
+│   │   │       │   └── QuestionRepository.groovy          # Interface para Persistência em Banco de Dados
 │   │   │       ├── 📁 service
-│   │   │       │   └── QuestionService.groovy             # Lógica de negócio
 │   │   │       │   └── AnswerService.groovy               # Lógica de negócio
+│   │   │       │   └── QuestionService.groovy             # Lógica de negócio
 │   │   │       └── 📄 QuizApiApplication.groovy           # Classe principal
 │   │   └── 📁 resources
 │   │       └── application.yml                            # Configurações da aplicação
 │   └── 📁 test
 │       └── 📁 groovy/com/app/quiz
-│           ├── 📁 controller/QuestionControllerSpec.groovy # Testes dos endpoints
-│           └── 📁 utils/TestUtils.groovy                   # Utilitários de teste
-├── 📄 build.gradle
-├── 📄 settings.gradle
+│           ├── 📁 controller
+│           │   └── AnswerControllerSpec.groovy            # Testes dos endpoints
+│           │   └── QuestionControllerSpec.groovy          # Testes dos endpoints
+│           └── 📁 utils/TestUtils.groovy                  # Utilitários de teste
 ├── 📄 .gitignore
-├── 📄 gradlew / gradlew.bat
-└── 📄 README.md
+├── 📄 build.gradle
+├── 📄 gradlew
+├── 📄 gradlew.bat
+├── 📄 README.md
+└── 📄 settings.gradle
+
 ```
 
 ---
@@ -110,17 +118,18 @@ build/reports/tests/test/index.html
 
 ## 🧭 Endpoints Principais
 
-| Método | Endpoint              | Descrição                            |
-| ------ | --------------------- | ------------------------------------ |
-| `GET`  | `/quiz/question/{id}` | Retorna uma pergunta mockada pelo ID |
-| `POST` | `/quiz/answer`        | Valida a resposta enviada (mock)     |
+| Método | Endpoint              | Descrição                                         |
+|--------| --------------------- |---------------------------------------------------|
+| `GET`  | `/quiz/question/{id}` | Retorna uma pergunta por ID do Banco de Dados     |
+| `POST` | `/quiz/question`      | Cria uma pergunta no Banco de Dados               |
+| `POST` | `/quiz/answer`        | Valida a resposta enviada com a do Banco de Dados |
 
 ---
 
 ## 🔄 Próximas Etapas
 
-* [ ] Integrar com banco de dados **MySQL**
-* [ ] Implementar camada de persistência (JPA / Hibernate)
+* [x] Integrar com banco de dados **MySQL**
+* [x] Implementar camada de persistência (JPA / Hibernate)
 * [ ] Adicionar autenticação com **JWT**
 * [ ] Criar endpoints para CRUD completo de perguntas
 * [ ] Implementar CI/CD e badges de build
