@@ -6,7 +6,7 @@ import com.app.quiz.service.QuestionService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/quiz")
+@RequestMapping("/quiz/api")
 class QuestionController {
 
     private final QuestionService questionService
@@ -15,12 +15,12 @@ class QuestionController {
         this.questionService = questionService
     }
 
-    @GetMapping("/question/{id}")
+    @GetMapping("/v1/questions/{id}")
     QuestionResponse getQuestionById(@PathVariable("id") Long id) {
         return questionService.getQuestionById(id)
     }
 
-    @PostMapping("/question")
+    @PostMapping("/v1/questions")
     Question submitAnswer(@RequestBody Question question) {
         return questionService.saveQuestion(question)
     }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/quiz")
+@RequestMapping("/quiz/api")
 class AnswerController {
 
     private final AnswerService answerService
@@ -18,7 +18,7 @@ class AnswerController {
         this.answerService = answerService
     }
 
-    @PostMapping("/answer")
+    @PostMapping("/v1/answers")
     AnswerResponse submitAnswer(@RequestBody AnswerRequest answerRequest) {
         return answerService.validateAnswer(answerRequest)
     }

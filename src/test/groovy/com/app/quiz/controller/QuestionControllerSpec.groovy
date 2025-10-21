@@ -37,7 +37,7 @@ class QuestionControllerSpec extends Specification {
         Mockito.when(questionService.getQuestionById(ArgumentMatchers.any())).thenReturn(mockQuestions);
 
         when: "the GET request is sent"
-        def response = this.mockMvc.perform(get("/quiz/question/{id}", 1L))
+        def response = this.mockMvc.perform(get("/quiz/api/v1/questions/{d}", 1L))
 
         then: "the endpoint responds with status 200 and valid JSON"
         response.andExpect(status().isOk())
@@ -55,7 +55,7 @@ class QuestionControllerSpec extends Specification {
         Mockito.when(questionService.getQuestionById(ArgumentMatchers.any())).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Question with ID ${id} not found."))
 
         when: "the GET request is sent with a non-existent question id"
-        def response = this.mockMvc.perform(get("/quiz/question/{id}", id))
+        def response = this.mockMvc.perform(get("/quiz/api/v1/questions/{d}", id))
 
         then: "the endpoint responds with 404 error code JSON response"
         response.andExpect(status().isNotFound())
@@ -67,7 +67,7 @@ class QuestionControllerSpec extends Specification {
         def id = "batata"
 
         when: "the GET request is sent with an invalid question id"
-        def response = this.mockMvc.perform(get("/quiz/question/{id}", id))
+        def response = this.mockMvc.perform(get("/quiz/api/v1/questions/{d}", id))
 
         then: "the endpoint responds with 404 error code JSON response"
         response.andExpect(status().isBadRequest())

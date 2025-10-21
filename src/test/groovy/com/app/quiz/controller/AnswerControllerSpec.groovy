@@ -43,7 +43,7 @@ class AnswerControllerSpec extends Specification {
         Mockito.when(answerService.validateAnswer(ArgumentMatchers.any())).thenReturn(mockAnswerResponse)
 
         when: "the POST request is sent with Json body"
-        def response = this.mockMvc.perform(post("/quiz/answer").content(TestUtils.writeValueAsString(mockAnswerRequest)).contentType(MediaType.APPLICATION_JSON))
+        def response = this.mockMvc.perform(post("/quiz/api/v1/answers").content(TestUtils.writeValueAsString(mockAnswerRequest)).contentType(MediaType.APPLICATION_JSON))
 
         then: "the endpoint responds with status 200 and valid JSON"
         response.andExpect(status().isOk())
@@ -68,7 +68,7 @@ class AnswerControllerSpec extends Specification {
         Mockito.when(answerService.validateAnswer(ArgumentMatchers.any())).thenReturn(mockAnswerResponse)
 
         when: "the POST request is sent with Json body"
-        def response = this.mockMvc.perform(post("/quiz/answer").content(TestUtils.writeValueAsString(mockAnswerRequest)).contentType(MediaType.APPLICATION_JSON))
+        def response = this.mockMvc.perform(post("/quiz/api/v1/answers").content(TestUtils.writeValueAsString(mockAnswerRequest)).contentType(MediaType.APPLICATION_JSON))
 
         then: "the endpoint responds with status 200 and valid JSON"
         response.andExpect(status().isOk())
@@ -93,7 +93,7 @@ class AnswerControllerSpec extends Specification {
         Mockito.when(answerService.validateAnswer(ArgumentMatchers.any())).thenReturn(mockAnswerResponse)
 
         when: "the POST request is sent with Json body with not found mock answer request"
-        def response = this.mockMvc.perform(post("/quiz/answer").content(TestUtils.writeValueAsString(mockAnswerRequest)).contentType(MediaType.APPLICATION_JSON))
+        def response = this.mockMvc.perform(post("/quiz/api/v1/answers").content(TestUtils.writeValueAsString(mockAnswerRequest)).contentType(MediaType.APPLICATION_JSON))
 
         then: "the endpoint responds with status 200 and valid JSON"
         response.andExpect(status().isOk())
