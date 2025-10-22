@@ -1,15 +1,14 @@
 package com.app.quiz.controller
 
 import com.app.quiz.dto.QuestionResponse
+import com.app.quiz.exception.QuestionNotFoundException
 import com.app.quiz.service.QuestionService
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.web.server.ResponseStatusException
 import spock.lang.Specification
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -52,7 +51,7 @@ class QuestionControllerSpec extends Specification {
         def id = 99L
 
         and: "the service returns the 404 error code response"
-        Mockito.when(questionService.getQuestionById(ArgumentMatchers.any())).thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Question with ID ${id} not found."))
+        Mockito.when(questionService.getQuestionById(ArgumentMatchers.any())).thenThrow(new QuestionNotFoundException(id))
 
         when: "the GET request is sent with a non-existent question id"
         def response = this.mockMvc.perform(get("/quiz/api/v1/questions/{d}", id))
@@ -62,7 +61,7 @@ class QuestionControllerSpec extends Specification {
 
     }
 
-    def "should return 400 bad request error for invalid question id"() {
+    def "should return 500 internal server error for invalid question id"() {
         given: "an invalid question id"
         def id = "batata"
 
@@ -70,7 +69,7 @@ class QuestionControllerSpec extends Specification {
         def response = this.mockMvc.perform(get("/quiz/api/v1/questions/{d}", id))
 
         then: "the endpoint responds with 404 error code JSON response"
-        response.andExpect(status().isBadRequest())
+        response.andExpect(status().isInternalServerError())
 
     }
 

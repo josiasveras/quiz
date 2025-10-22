@@ -23,7 +23,9 @@ class AnswerController {
 
     @PostMapping("/v1/answers")
     ResponseEntity<AnswerResponse> submitAnswer(@Valid @RequestBody AnswerRequest answerRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(answerService.validateAnswer(answerRequest))
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(answerService.validateAnswer(answerRequest))
     }
 
 }

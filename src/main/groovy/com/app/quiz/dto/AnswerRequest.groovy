@@ -5,10 +5,10 @@ import jakarta.validation.constraints.NotNull
 
 class AnswerRequest {
 
-    @NotNull
+    @NotNull(message = "Question ID must not be null")
     Long questionId
 
-    @NotBlank
+    @NotBlank(message = "Selected answer cannot be blank")
     String selectedAnswer
 
 }
