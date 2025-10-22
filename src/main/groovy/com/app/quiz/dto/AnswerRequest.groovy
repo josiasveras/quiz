@@ -1,12 +1,14 @@
 package com.app.quiz.dto
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 
 class AnswerRequest {
 
-    @JsonProperty("questionId")
+    @NotNull
     Long questionId
 
-    @JsonProperty("selectedAnswer")
+    @NotBlank
     String selectedAnswer
+
 }

@@ -46,7 +46,7 @@ class AnswerControllerSpec extends Specification {
         def response = this.mockMvc.perform(post("/quiz/api/v1/answers").content(TestUtils.writeValueAsString(mockAnswerRequest)).contentType(MediaType.APPLICATION_JSON))
 
         then: "the endpoint responds with status 200 and valid JSON"
-        response.andExpect(status().isOk())
+        response.andExpect(status().isCreated())
                 .andExpect(jsonPath('$.correct').value(true))
                 .andExpect(jsonPath('$.message').value("Resposta correta!"))
     }
@@ -71,7 +71,7 @@ class AnswerControllerSpec extends Specification {
         def response = this.mockMvc.perform(post("/quiz/api/v1/answers").content(TestUtils.writeValueAsString(mockAnswerRequest)).contentType(MediaType.APPLICATION_JSON))
 
         then: "the endpoint responds with status 200 and valid JSON"
-        response.andExpect(status().isOk())
+        response.andExpect(status().isCreated())
                 .andExpect(jsonPath('$.correct').value(false))
                 .andExpect(jsonPath('$.message').value("Resposta incorreta."))
     }
@@ -96,7 +96,7 @@ class AnswerControllerSpec extends Specification {
         def response = this.mockMvc.perform(post("/quiz/api/v1/answers").content(TestUtils.writeValueAsString(mockAnswerRequest)).contentType(MediaType.APPLICATION_JSON))
 
         then: "the endpoint responds with status 200 and valid JSON"
-        response.andExpect(status().isOk())
+        response.andExpect(status().isCreated())
                 .andExpect(jsonPath('$.correct').value(false))
                 .andExpect(jsonPath('$.message').value("Pergunta não encontrada."))
     }
