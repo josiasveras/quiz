@@ -6,6 +6,7 @@ import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
 import org.springframework.web.servlet.resource.NoResourceFoundException
 
 /**
@@ -62,5 +63,16 @@ class GlobalExceptionHandler {
                 message  : ex.message
         ]
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body) as ResponseEntity<Map<String, Object>>
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException)
+    ResponseEntity<Map<String, Object>> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        def body = [
+                timestamp: new Date(),
+                status   : HttpStatus.BAD_REQUEST.value(),
+                error    : "Type Mismatch Error",
+                message  : ex.message
+        ]
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body as Map<String, Object>)
     }
 }
