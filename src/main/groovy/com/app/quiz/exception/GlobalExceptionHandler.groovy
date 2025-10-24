@@ -6,6 +6,7 @@ import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.servlet.resource.NoResourceFoundException
 
 /**
  * Global class for centralized error and exception handling.
@@ -50,5 +51,16 @@ class GlobalExceptionHandler {
                 message  : ex.message
         ]
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body) as ResponseEntity<Map<String, Object>>
+    }
+
+    @ExceptionHandler(NoResourceFoundException)
+    ResponseEntity<Map<String, Object>> handleNoResourceFound(NoResourceFoundException ex) {
+        def body = [
+                timestamp: new Date(),
+                status   : HttpStatus.NOT_FOUND.value(),
+                error    : "No Resource Found Error",
+                message  : ex.message
+        ]
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body) as ResponseEntity<Map<String, Object>>
     }
 }
