@@ -1,8 +1,12 @@
 package com.app.quiz.controller
 
+import com.app.quiz.dto.QuestionRequest
 import com.app.quiz.dto.QuestionResponse
 import com.app.quiz.model.Question
 import com.app.quiz.service.QuestionService
+import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -21,8 +25,10 @@ class QuestionController {
     }
 
     @PostMapping("/v1/questions")
-    Question submitAnswer(@RequestBody Question question) {
-        return questionService.saveQuestion(question)
+    ResponseEntity<Question> submitQuestion(@Valid @RequestBody QuestionRequest questionRequest) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(questionService.saveQuestion(questionRequest))
     }
 
 }
