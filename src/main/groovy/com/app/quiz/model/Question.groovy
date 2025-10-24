@@ -15,7 +15,7 @@ class Question {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "question_options", joinColumns = @JoinColumn(name = "question_id"))
-    @Column(name = "option_value")
+    @Column(name = "option_value", nullable = false)
     List<String> options = []
 
     @Column(name = "correct_answer", nullable = false)
