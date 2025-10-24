@@ -8,12 +8,12 @@ import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 @WebMvcTest(QuestionController)
 class QuestionControllerSpec extends Specification {
@@ -25,21 +25,22 @@ class QuestionControllerSpec extends Specification {
     QuestionService questionService
 
     def "should return a question with options by id"() {
-        given: "a mock question response"
+        given: "a question response"
         def mockQuestions = new QuestionResponse(
                 id: 1L,
                 text: "Qual instrumento Davi gostava de tocar?",
                 options: ["A) Tambor", "B) Harpa", "C) Flauta"]
         )
 
-        and: "the service returns the mock response"
+        when: "the service returns the question response"
         Mockito.when(questionService.getQuestionById(ArgumentMatchers.any())).thenReturn(mockQuestions);
 
-        when: "the GET request is sent"
+        and: "the get request is sent"
         def response = this.mockMvc.perform(get("/quiz/api/v1/questions/{d}", 1L))
 
         then: "the endpoint responds with status 200 and valid JSON"
         response.andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath('$.id').value(1))
                 .andExpect(jsonPath('$.text').value("Qual instrumento Davi gostava de tocar?"))
                 .andExpect(jsonPath('$.options').isArray())
@@ -50,27 +51,31 @@ class QuestionControllerSpec extends Specification {
         given: "a valid type but non-existent question id"
         def id = 99L
 
-        and: "the service returns the 404 error code response"
+        when: "the service returns the 404 error code response"
         Mockito.when(questionService.getQuestionById(ArgumentMatchers.any())).thenThrow(new QuestionNotFoundException(id))
 
-        when: "the GET request is sent with a non-existent question id"
+        and: "the get request is sent with a non-existent question id"
         def response = this.mockMvc.perform(get("/quiz/api/v1/questions/{d}", id))
 
-        then: "the endpoint responds with 404 error code JSON response"
+        then: "the endpoint responds with 404 not found error code JSON response"
         response.andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 
     }
 
-    def "should return 500 internal server error for invalid question id"() {
-        given: "an invalid question id"
-        def id = "batata"
+    def "should return 404 not found error for non-existent url"() {
+        given: "a valid question id"
+        def id = 1L
 
-        when: "the GET request is sent with an invalid question id"
-        def response = this.mockMvc.perform(get("/quiz/api/v1/questions/{d}", id))
+        and: "a non-existent url"
+        def nonExistentUrl = "/quiz/api/v1/batata/{id}"
 
-        then: "the endpoint responds with 404 error code JSON response"
-        response.andExpect(status().isInternalServerError())
+        when: "the get request is sent with a non-existent url"
+        def response = this.mockMvc.perform(get("$nonExistentUrl", id))
+
+        then: "the endpoint responds with 404 not found error code JSON response"
+        response.andExpect(status().isNotFound())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 
     }
-
 }
