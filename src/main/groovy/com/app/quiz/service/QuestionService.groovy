@@ -1,5 +1,6 @@
 package com.app.quiz.service
 
+import com.app.quiz.dto.QuestionRequest
 import com.app.quiz.dto.QuestionResponse
 import com.app.quiz.exception.QuestionNotFoundException
 import com.app.quiz.model.Question
@@ -32,8 +33,19 @@ class QuestionService {
         }
     }
 
-    Question saveQuestion(Question question) {
-        return questionRepository.save(question)
+    QuestionResponse saveQuestion(QuestionRequest questionRequest) {
+        def question = new Question(
+                text: questionRequest.text,
+                options: questionRequest.options,
+                correctAnswer: questionRequest.correctAnswer
+        )
+        questionRepository.save(question)
+
+        return new QuestionResponse(
+                id: question.id,
+                text: question.text,
+                options: question.options
+        )
     }
 
 }
