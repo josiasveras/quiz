@@ -2,7 +2,6 @@ package com.app.quiz.controller
 
 import com.app.quiz.dto.QuestionRequest
 import com.app.quiz.dto.QuestionResponse
-import com.app.quiz.model.Question
 import com.app.quiz.service.QuestionService
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -25,10 +24,10 @@ class QuestionController {
     }
 
     @PostMapping("/v1/questions")
-    ResponseEntity<Question> submitQuestion(@Valid @RequestBody QuestionRequest questionRequest) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(questionService.saveQuestion(questionRequest))
+    ResponseEntity<QuestionResponse> submitQuestion(@Valid @RequestBody QuestionRequest questionRequest) {
+        def questionSaved = questionService.saveQuestion(questionRequest)
+        return ResponseEntity.status(HttpStatus.CREATED).body(questionSaved)
+
     }
 
 }
