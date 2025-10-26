@@ -82,6 +82,18 @@ class QuestionControllerSpec extends Specification {
 
     }
 
+    def "should return 400 bad request error for invalid question id type"() {
+        given: "an invalid question id"
+        def id = "batata"
+
+        when: "the GET request is sent with an invalid question id"
+        def response = this.mockMvc.perform(get("/quiz/api/v1/questions/{id}", id))
+
+        then: "the endpoint responds with 404 error code JSON response"
+        response.andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+    }
+
     def "should save a new question"() {
         given: "a valid question request object"
         def questionRequestMock = new QuestionRequest(
