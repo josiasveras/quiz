@@ -19,8 +19,9 @@ class QuestionController {
     }
 
     @GetMapping("/v1/questions/{id}")
-    QuestionResponse getQuestionById(@PathVariable("id") Long id) {
-        return questionService.getQuestionById(id)
+    ResponseEntity<QuestionResponse> getQuestionById(@PathVariable("id") Long id) {
+        def question = questionService.getQuestionById(id)
+        return ResponseEntity.status(HttpStatus.OK).body(question)
     }
 
     @PostMapping("/v1/questions")
