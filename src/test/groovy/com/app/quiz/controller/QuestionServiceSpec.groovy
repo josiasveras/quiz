@@ -74,4 +74,33 @@ class QuestionServiceSpec extends Specification {
         response.text == "Quem foi o 'assistente' do profeta Elias?"
         response.options.size() == 3
     }
+
+    def "should return a question response list"() {
+        given: "a question list mock"
+        def mockQuestionResponseList = [
+                new QuestionResponse(
+                        id: 1L,
+                        text: "Qual instrumento Davi gostava de tocar?",
+                        options: ["A) Tambor", "B) Harpa", "C) Flauta"]
+                ),
+                new QuestionResponse(
+                        id: 2L,
+                        text: "Quando Jesus nasceu, onde Ele foi colocado?",
+                        options: ["A) Em uma cama", "B) Em uma manjedoura", "C) Em um trono"]
+                ),
+                new QuestionResponse(
+                        id: 3L,
+                        text: "Na parábola do semeador, quais sementes que cresceram e deram uma boa colheita?",
+                        options: ["A) As sementes que caíram nas pedras", "B) As sementes que caíram em boa terra", "C) As sementes que caíram entre os espinhos"]
+                )]
+
+        questionRepository.findAll() >> mockQuestionResponseList
+
+        when: "the service returns the question response list"
+        def response = questionService.getAllQuestions()
+
+        then: "the service responds with a valid question response list"
+        response instanceof ArrayList<QuestionResponse>
+        !response.isEmpty()
+    }
 }
