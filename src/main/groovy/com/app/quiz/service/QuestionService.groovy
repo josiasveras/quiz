@@ -39,6 +39,7 @@ class QuestionService {
                 options: questionRequest.options,
                 correctAnswer: questionRequest.correctAnswer
         )
+
         questionRepository.save(question)
 
         return new QuestionResponse(

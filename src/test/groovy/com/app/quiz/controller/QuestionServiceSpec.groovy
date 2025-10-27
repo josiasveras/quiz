@@ -1,69 +1,77 @@
 package com.app.quiz.controller
 
+import com.app.quiz.dto.QuestionRequest
 import com.app.quiz.dto.QuestionResponse
 import com.app.quiz.exception.QuestionNotFoundException
+import com.app.quiz.model.Question
+import com.app.quiz.repository.QuestionRepository
 import com.app.quiz.service.QuestionService
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.MockMvc
 import spock.lang.Specification
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-
-@WebMvcTest(QuestionController)
 class QuestionServiceSpec extends Specification {
 
-    @Autowired
-    MockMvc mockMvc;
+    def questionRepository = Mock(QuestionRepository)
+    def questionService = new QuestionService(questionRepository)
 
-    @MockBean
-    QuestionService questionService
-
-    def "should return 200 ok code and a question response by id"() {
-        given: "a mock question response"
-        def mockQuestions = new QuestionResponse(
+    def "should return a question response by id"() {
+        given: "a question mock"
+        def questionMock = new Question(
                 id: 1L,
                 text: "Qual instrumento Davi gostava de tocar?",
-                options: ["A) Tambor", "B) Harpa", "C) Flauta"]
+                options: ["A) Tambor", "B) Harpa", "C) Flauta"],
+                correctAnswer: "B) Harpa"
         )
 
         and: "a valid database question id"
         def id = 1L
 
-        and: "the service returns the mock response"
-        Mockito.when(questionService.getQuestionById(ArgumentMatchers.any())).thenReturn(mockQuestions);
+        questionRepository.findById(id) >> Optional.of(questionMock)
 
-        when: "the get request is sent with valid id"
-        def response = this.mockMvc.perform(get("/quiz/api/v1/questions/{d}", id))
+        when: "the service returns the question response"
+        def response = questionService.getQuestionById(id)
 
-        then: "the endpoint responds with status 200 and valid json"
-        response.andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath('$.id').value(1))
-                .andExpect(jsonPath('$.text').value("Qual instrumento Davi gostava de tocar?"))
-                .andExpect(jsonPath('$.options').isArray())
-                .andExpect(jsonPath('$.options.length()').value(3))
+        then: "the service responds with a valid question response"
+        response instanceof QuestionResponse
+        response.id == 1L
+        response.text == "Qual instrumento Davi gostava de tocar?"
+        response.options.size() == 3
     }
 
-    def "should return 404 not found error for non-existent question id"() {
-        given: "a valid type but non-existent question id"
+    def "should return exception for non-existent question id"() {
+        given: "a non-existent database question id"
         def id = 99L
 
-        and: "the service returns the 404 error code response"
-        Mockito.when(questionService.getQuestionById(ArgumentMatchers.any())).thenThrow(new QuestionNotFoundException(id))
+        questionRepository.findById(id) >> Optional.empty()
 
-        when: "the get request is sent with a non-existent question id"
-        def response = this.mockMvc.perform(get("/quiz/api/v1/questions/{d}", id))
+        when: "the service returns the question response"
+        questionService.getQuestionById(id)
 
-        then: "the endpoint responds with 404 error code JSON response"
-        response.andExpect(status().isNotFound())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-
+        then: "the service responds with a valid question response"
+        thrown(QuestionNotFoundException)
     }
 
+    def "should save a new question"() {
+        given: "a mock question request"
+        def mockQuestionRequest = new QuestionRequest(
+                text: "Quem foi o 'assistente' do profeta Elias?",
+                options: ["A) Eliseu", "B) Enoque", "C) Jonas"],
+                correctAnswer: "A) Eliseu"
+        )
+
+        and: "a mock question"
+        def mockQuestion = new Question(
+                text: "Quem foi o 'assistente' do profeta Elias?",
+                options: ["A) Eliseu", "B) Enoque", "C) Jonas"],
+                correctAnswer: "A) Eliseu"
+        )
+
+        questionRepository.save(mockQuestion) >> mockQuestion
+
+        when: "the service saves a question"
+        def response = questionService.saveQuestion(mockQuestionRequest)
+
+        then: "the service returns a valid question response"
+        response.text == "Quem foi o 'assistente' do profeta Elias?"
+        response.options.size() == 3
+    }
 }
