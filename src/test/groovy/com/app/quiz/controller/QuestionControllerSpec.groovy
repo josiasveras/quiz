@@ -136,4 +136,34 @@ class QuestionControllerSpec extends Specification {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
     }
 
+    def "should return all questions" () {
+        given: "a question response list"
+        def mockQuestionResponseList = [
+        new QuestionResponse(
+                id: 1L,
+                text: "Qual instrumento Davi gostava de tocar?",
+                options: ["A) Tambor", "B) Harpa", "C) Flauta"]
+        ),
+        new QuestionResponse(
+                id: 2L,
+                text: "Quando Jesus nasceu, onde Ele foi colocado?",
+                options: ["A) Em uma cama", "B) Em uma manjedoura", "C) Em um trono"]
+        ),
+        new QuestionResponse(
+                id: 3L,
+                text: "Na parábola do semeador, quais sementes que cresceram e deram uma boa colheita?",
+                options: ["A) As sementes que caíram nas pedras", "B) As sementes que caíram em boa terra", "C) As sementes que caíram entre os espinhos"]
+        )]
+
+        when: "the service returns the question response list"
+        Mockito.when(questionService.getAllQuestions()).thenReturn(mockQuestionResponseList)
+
+        and: "the get request is sent"
+        def response = this.mockMvc.perform (get("/quiz/api/v1/questions"))
+
+        then: "the endpoint responds with valid question response list json"
+        response.andExpect (status().isOk())
+                .andExpect (content()contentType(MediaType.APPLICATION_JSON))
+    }
+
 }
