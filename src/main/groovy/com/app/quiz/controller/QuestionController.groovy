@@ -24,6 +24,12 @@ class QuestionController {
         return ResponseEntity.status(HttpStatus.OK).body(question)
     }
 
+    @GetMapping("/v1/questions")
+    ResponseEntity<QuestionResponse> getAllQuestions() {
+        def questions = questionService.getAllQuestions()
+        return ResponseEntity.status(HttpStatus.OK).body(questions)
+    }
+
     @PostMapping("/v1/questions")
     ResponseEntity<QuestionResponse> submitQuestion(@Valid @RequestBody QuestionRequest questionRequest) {
         def questionSaved = questionService.saveQuestion(questionRequest)
