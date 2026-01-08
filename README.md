@@ -45,20 +45,23 @@ O projeto está em fase de desenvolvimento inicial e **atualmente utiliza dados 
 │   │   ├── 📁 groovy
 │   │   │   └── 📁 com/app/quiz
 │   │   │       ├── 📁 controller
-│   │   │       │   └── AnswerController.groovy            # Endpoints REST
+│   │   │       │   ├── AnswerController.groovy            # Endpoints REST
 │   │   │       │   └── QuestionController.groovy          # Endpoints REST
 │   │   │       ├── 📁 dto
 │   │   │       │   ├── AnswerRequest.groovy               # Request model (POST /answer)
 │   │   │       │   ├── AnswerResponse.groovy              # Response model (POST /answer)
 │   │   │       │   └── QuestionResponse.groovy            # Response model (GET /question/{id})
+│   │   │       ├── 📁 exception
+│   │   │       │   ├── GlobalExceptionHandler.groovy      # Classe global tratamento centralizado de erros e exceções
+│   │   │       │   └── QuestionNotFoundException.groovy
 │   │   │       ├── 📁 model
-│   │   │       │   └── Answer.groovy                      # Entidade para Pergunta
+│   │   │       │   ├── Answer.groovy                      # Entidade para Pergunta
 │   │   │       │   └── Question.groovy                    # Entidade para Questão
 │   │   │       ├── 📁 repository
-│   │   │       │   └── AnswerRepository.groovy            # Interface para Persistência em Banco de Dados
+│   │   │       │   ├── AnswerRepository.groovy            # Interface para Persistência em Banco de Dados
 │   │   │       │   └── QuestionRepository.groovy          # Interface para Persistência em Banco de Dados
 │   │   │       ├── 📁 service
-│   │   │       │   └── AnswerService.groovy               # Lógica de negócio
+│   │   │       │   ├── AnswerService.groovy               # Lógica de negócio
 │   │   │       │   └── QuestionService.groovy             # Lógica de negócio
 │   │   │       └── 📄 QuizApiApplication.groovy           # Classe principal
 │   │   └── 📁 resources
@@ -66,8 +69,10 @@ O projeto está em fase de desenvolvimento inicial e **atualmente utiliza dados 
 │   └── 📁 test
 │       └── 📁 groovy/com/app/quiz
 │           ├── 📁 controller
-│           │   └── AnswerControllerSpec.groovy            # Testes dos endpoints
-│           │   └── QuestionControllerSpec.groovy          # Testes dos endpoints
+│           │   ├── AnswerControllerSpec.groovy            # Testes dos endpoints
+│           │   ├── AnswerServiceSpec.groovy               # Testes dos endpoints
+│           │   ├── QuestionControllerSpec.groovy          # Testes dos endpoints
+│           │   └── QuestionServiceSpec.groovy             # Testes dos endpoints
 │           └── 📁 utils/TestUtils.groovy                  # Utilitários de teste
 ├── 📄 .gitignore
 ├── 📄 build.gradle
