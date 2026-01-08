@@ -1,4 +1,4 @@
-package com.app.quiz.controller
+package com.app.quiz.service
 
 import com.app.quiz.dto.AnswerRequest
 import com.app.quiz.dto.AnswerResponse
@@ -7,7 +7,6 @@ import com.app.quiz.model.Answer
 import com.app.quiz.model.Question
 import com.app.quiz.repository.AnswerRepository
 import com.app.quiz.repository.QuestionRepository
-import com.app.quiz.service.AnswerService
 import spock.lang.Specification
 
 class AnswerServiceSpec extends Specification {

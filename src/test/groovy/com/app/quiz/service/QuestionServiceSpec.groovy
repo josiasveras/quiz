@@ -1,11 +1,10 @@
-package com.app.quiz.controller
+package com.app.quiz.service
 
 import com.app.quiz.dto.QuestionRequest
 import com.app.quiz.dto.QuestionResponse
 import com.app.quiz.exception.QuestionNotFoundException
 import com.app.quiz.model.Question
 import com.app.quiz.repository.QuestionRepository
-import com.app.quiz.service.QuestionService
 import spock.lang.Specification
 
 class QuestionServiceSpec extends Specification {
