@@ -48,9 +48,10 @@ O projeto está em fase de desenvolvimento inicial e **atualmente utiliza dados 
 │   │   │       │   ├── AnswerController.groovy            # Endpoints REST
 │   │   │       │   └── QuestionController.groovy          # Endpoints REST
 │   │   │       ├── 📁 dto
-│   │   │       │   ├── AnswerRequest.groovy               # Request model (POST /answer)
-│   │   │       │   ├── AnswerResponse.groovy              # Response model (POST /answer)
-│   │   │       │   └── QuestionResponse.groovy            # Response model (GET /question/{id})
+│   │   │       │   ├── AnswerRequest.groovy               # Request model (POST /answers)
+│   │   │       │   ├── AnswerResponse.groovy              # Response model (POST /answers)
+│   │   │       │   ├── QuestionRequest.groovy             # Response model (POST /questions)
+│   │   │       │   └── QuestionResponse.groovy            # Response model (GET POST /questions)
 │   │   │       ├── 📁 exception
 │   │   │       │   ├── GlobalExceptionHandler.groovy      # Classe global tratamento centralizado de erros e exceções
 │   │   │       │   └── QuestionNotFoundException.groovy
@@ -70,9 +71,10 @@ O projeto está em fase de desenvolvimento inicial e **atualmente utiliza dados 
 │       └── 📁 groovy/com/app/quiz
 │           ├── 📁 controller
 │           │   ├── AnswerControllerSpec.groovy            # Testes dos endpoints
-│           │   ├── AnswerServiceSpec.groovy               # Testes dos endpoints
-│           │   ├── QuestionControllerSpec.groovy          # Testes dos endpoints
-│           │   └── QuestionServiceSpec.groovy             # Testes dos endpoints
+│           │   └── QuestionControllerSpec.groovy          # Testes dos endpoints
+│           ├── 📁 service
+│           │   ├── AnswerServiceSpec.groovy               # Testes regras de negócio
+│           │   └── QuestionServiceSpec.groovy             # Testes regras de negócio
 │           └── 📁 utils/TestUtils.groovy                  # Utilitários de teste
 ├── 📄 .gitignore
 ├── 📄 build.gradle
